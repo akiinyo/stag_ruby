@@ -2,9 +2,11 @@
 
 # 3点先取勝負
 
+class Player
 PAPER = 0
 SCISORS = 1
 STONE = 2
+POINTS_TO_WIN = 3
 WIN = {
   [PAPER, STONE] => true,
   [SCISORS, PAPER] => true,
@@ -12,34 +14,54 @@ WIN = {
 }
 HANDS = ["パー","チョキ","グー"]
 
-class Player
-  def initialize()
+  def initialize(msg)
     @point = 0
     @choice = nil
+    @message = msg
   end
 
-  attr_accessor :choice
-  attr_accessor :point
-end
+  def victory?
+    @point == POINTS_TO_WIN
+  end
 
-computer = Player.new()
-player = Player.new()
+  def fight(other)
+    deceide_human()
+    other.decide_computer()
+    puts("あなた: #{HANDS[choice]}, コンピュータ: #{HANDS[other.choice]}")
+    judge(other)
+    other.judge(self)
+  end
 
-while player.point < 3 && computer.point < 3
-  puts("パーは0、チョキは1、グーは2を入れてください！")
-  choice = gets()
-  player.choice = Integer(choice)
-  computer.choice = rand(3)
-  puts("あなた:#{HANDS[player.choice]}, コンピューター:#{HANDS[computer.choice]}")
-  if WIN[[player.choice, computer.choice]]
-    player.point += 1
-  elsif WIN[[computer.choice, player.choice]]
-    computer.point += 1
+  def victory_speech()
+    if victory?
+      puts(@message)
+    end
+  end
+
+  protected
+
+  def deceide_human()
+    puts("パーは0、チョキは1、グーは2を入れてください")
+    @choice = Integer(gets())
+  end
+
+  def decide_computer()
+    @choice = rand(3)
+  end
+
+  attr_reader :choice
+
+  def judge(other)
+    if WIN[[choice, other.choice]]
+      @point += 1
+    end
   end
 end
 
-if player.point >= 3
-  puts("あなたの勝ちです")
-else
-  puts("あなたの負けです")
+computer = Player.new("あなたの負けです")
+player = Player.new("あなたの勝ちです")
+while !computer.victory? && !player.victory?
+  player.fight(computer)
 end
+computer.victory_speech()
+player.victory_speech()
