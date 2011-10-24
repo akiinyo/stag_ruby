@@ -14,10 +14,10 @@ WIN = {
 }
 HANDS = ["パー","チョキ","グー"]
 
-  def initialize(msg)
+  def initialize(name)
     @point = 0
     @choice = nil
-    @message = msg
+    @name = name
   end
 
   def victory?
@@ -25,31 +25,29 @@ HANDS = ["パー","チョキ","グー"]
   end
 
   def fight(other)
-    deceide_human()
-    other.decide_computer()
-    puts("あなた: #{HANDS[choice]}, コンピュータ: #{HANDS[other.choice]}")
-    judge(other)
-    other.judge(self)
+    while !victory? && !other.victory?
+      decide()
+      other.decide()
+      puts("#{name} : #{HANDS[choice]}, #{other.name} : #{HANDS[other.choice]}")
+      judge(other)
+      other.judge(self)
+    end
   end
 
   def victory_speech()
     if victory?
-      puts(@message)
+      puts("#{name}の勝ち！")
     end
   end
 
   protected
 
-  def deceide_human()
-    puts("パーは0、チョキは1、グーは2を入れてください")
-    @choice = Integer(gets())
-  end
-
-  def decide_computer()
+  def decide()
     @choice = rand(3)
   end
 
   attr_reader :choice
+  attr_reader :name
 
   def judge(other)
     if WIN[[choice, other.choice]]
@@ -58,10 +56,17 @@ HANDS = ["パー","チョキ","グー"]
   end
 end
 
-computer = Player.new("あなたの負けです")
-player = Player.new("あなたの勝ちです")
-while !computer.victory? && !player.victory?
-  player.fight(computer)
+class HumanPlayer < Player
+
+  def decide()
+    puts("パーは0、チョキは1、グーは2を入れてください")
+    @choice = Integer(gets())
+  end
+
+  computer = Player.new("コンピュータ")
+  player = HumanPlayer.new("あなた")
+  computer.fight(player)
+  computer.victory_speech()
+  player.victory_speech()
+
 end
-computer.victory_speech()
-player.victory_speech()
