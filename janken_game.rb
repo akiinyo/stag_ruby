@@ -14,10 +14,11 @@ WIN = {
 }
 HANDS = ["パー","チョキ","グー"]
 
-  def initialize(name)
+  def initialize(name, selector)
     @point = 0
     @choice = nil
     @name = name
+    @selector = selector
   end
 
   def victory?
@@ -43,7 +44,7 @@ HANDS = ["パー","チョキ","グー"]
   protected
 
   def decide()
-    @choice = rand(3)
+    @choice = @selector.select()
   end
 
   attr_reader :choice
@@ -54,19 +55,27 @@ HANDS = ["パー","チョキ","グー"]
       @point += 1
     end
   end
+
+  def victory?()
+    @point == POINTS_TO_WIN
+  end
 end
 
-class HumanPlayer < Player
-
-  def decide()
-    puts("パーは0、チョキは1、グーは2を入れてください")
-    @choice = Integer(gets())
+class ComputerSelector
+  def select()
+    rand(3)
   end
+end
 
-  computer = Player.new("コンピュータ")
-  player = HumanPlayer.new("あなた")
+class HumanSelector
+  def select()
+    puts("パーは0、チョキは1、グーは2を入れてください")
+    Integer(gets())
+  end
+end
+
+  computer = Player.new("コンピュータ", ComputerSelector.new())
+  player = Player.new("あなた", HumanSelector.new())
   computer.fight(player)
   computer.victory_speech()
   player.victory_speech()
-
-end
