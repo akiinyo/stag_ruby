@@ -3,7 +3,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 
 require 'or'
 
-o = Or.new
+o = Or.new(2)
 o.set_input(0,0)
 o.set_input(1,0)
 puts("0 or 0 = #{o.get_output}")

@@ -3,7 +3,7 @@ $LOAD_PATH << File.dirname(__FILE__)
 
 require 'xor'
 
-xo = Xor.new
+xo = Xor.new(2)
 xo.set_input(0,0)
 xo.set_input(1,0)
 puts("0 xor 0 = #{xo.get_output}")

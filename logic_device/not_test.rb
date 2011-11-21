@@ -1,6 +1,6 @@
-# encoding utf-8
-
+# encoding: utf-8
 $LOAD_PATH << File.dirname(__FILE__)
+
 require 'not'
 
 nt = Not.new

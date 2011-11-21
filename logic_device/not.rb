@@ -1,10 +1,15 @@
-class Not
-  def set_input(value)
-    @input = value
+# encoding: utf-8
+$LOAD_PATH << File.dirname(__FILE__)
+
+require 'logic_device'
+
+class Not < LogicDevice
+  def initialize
+    super(1, 1)
   end
 
-  def get_output
-    if @input == 1
+ def compute_output(index)
+    if @input[0] == 1
       0
     else
       1
