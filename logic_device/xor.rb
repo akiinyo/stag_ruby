@@ -8,15 +8,15 @@ class Xor < LogicDevice
     super(input_count, 1)
   end
 
-  def compute_output(index)
+  def compute_output
     sum = 0
-    @input.each do |v|
-      if v == 1
+    @input_terminals.each do |v|
+      if v.state == 1
         sum += 1
       end
     end
 
-    sum % 2
+    @output_terminals[0].state = sum % 2
   end
 end
 

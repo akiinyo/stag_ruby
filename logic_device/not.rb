@@ -8,11 +8,11 @@ class Not < LogicDevice
     super(1, 1)
   end
 
- def compute_output(index)
-    if @input[0] == 1
-      0
+ def compute_output
+    if @input_terminals[0].state == 1
+      @output_terminals[0].state = 0
     else
-      1
+      @output_terminals[0].state = 1
     end
   end
 end

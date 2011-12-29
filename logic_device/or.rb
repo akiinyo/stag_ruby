@@ -8,10 +8,13 @@ class Or < LogicDevice
     super(input_count, 1)
   end
 
-  def compute_output(index)
-    @input.each do |v|
-      return 1 if v == 1
+  def compute_output
+    @input_terminals.each do |v|
+      if v.state == 1
+        @output_terminals[0].state = 1
+        return
+      end
     end
-    0
+    @output_terminals[0].state = 0
   end
 end
