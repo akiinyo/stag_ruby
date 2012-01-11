@@ -1,4 +1,5 @@
 # encoding: utf-8
+$LOAD_PATH << File.dirname(__FILE__)
 
 require "terminal"
 
@@ -18,12 +19,12 @@ class LogicDevice
 
   def get_input_terminal(index = 0)
     check_index(index, @input_count)
-    @input_terminal[index]
+    @input_terminals[index]
   end
 
   def get_output_terminal(index = 0)
     check_index(index, @output_count)
-    compute_output_terminals[index]
+    @output_terminals[index]
   end
 
   private
