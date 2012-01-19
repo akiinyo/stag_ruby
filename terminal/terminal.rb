@@ -2,9 +2,12 @@
 
 class Terminal
   def initialize
+    @name = name
     @connected = []
     @current_state = nil
   end
+
+  attr_reader :name
 
   def connect(&proc)
     @connected << proc

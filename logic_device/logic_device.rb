@@ -1,21 +1,18 @@
 # encoding: utf-8
 $LOAD_PATH << File.dirname(__FILE__)
 
-require "terminal"
+require "~/ruby_projects/stag_ruby/terminal/terminal"
 
 class LogicDevice
-  def initialize(input_count, output_count)
+  def initialize(name, input_count, output_count)
+    @name = name
     @input_count = input_count
     @output_count = output_count
-    @input_terminals = Array.new(input_count) do |i|
-      input = Terminal.new
-      input.connect do |state|
-        compute_output
-      end
-      input
-    end
-    @output_terminals = Array.new(output_count) {|i| Terminal.new}
+    @input_terminals = Array.new(input_count) {|i| Terminal.new("#{name}.in(#{i})")}
+    @output_terminals = Array.new(output_count) {|i| Terminal.new("#{name}.out(#{i})")}
   end
+
+  attr_reader :name
 
   def get_input_terminal(index = 0)
     check_index(index, @input_count)
@@ -25,10 +22,6 @@ class LogicDevice
   def get_output_terminal(index = 0)
     check_index(index, @output_count)
     @output_terminals[index]
-  end
-
-  private
-  def compute_output
   end
 
   def check_index(index, index_count)
